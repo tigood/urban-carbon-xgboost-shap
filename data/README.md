@@ -1,9 +1,14 @@
 # Data
 
-## File
+## Files
 
 `city_carbon_panel_2011_2019.csv` — balanced city-year panel, 2,079 observations
 (231 cities × 9 years, 2011–2019), 21 columns, no missing values.
+
+`city_carbon_panel_2011_2019_observed_CO2_only.csv` — sensitivity-analysis
+subset, 1,811 observations, the same 231-city universe, the same 21 columns and
+no missing CO2 outcomes. The panel is intentionally unbalanced because only
+city-year rows with an originally measured CO2 outcome are retained.
 
 ## Provenance
 
@@ -18,16 +23,27 @@
 ## Construction
 
 The panel starts from 256 cities. Twenty-five cities with fewer than five years
-of valid emission records were dropped, leaving 231 cities. Missing values in
-the explanatory variables were imputed by linear interpolation within each
-city's own time series, using observations from both temporal directions;
-series boundaries were filled by next-observation-carried-backward or
-last-observation-carried-forward. The single FDI series that was missing
-entirely for one city was filled with the sample mean.
+of valid emission records were dropped, leaving 231 cities. A balanced
+city-year grid was then constructed. Missing values, including missing
+`CO2_Emission` outcomes and explanatory variables, were imputed by linear
+interpolation within each city's own time series, using observations from both
+temporal directions; series boundaries were filled by
+next-observation-carried-backward or last-observation-carried-forward. The
+single FDI series that was missing entirely for one city was filled with the
+sample mean.
+
+The observed-only sensitivity file was not identified from the completed
+interpolated outcome column. Instead, the original pre-interpolation data were
+used to form the set of observed `(City, Year)` keys, and the balanced main
+panel was restricted to those keys. This removes 268 interpolated-outcome rows
+while preserving the main panel's predictor definitions and values for the
+remaining observations.
 
 Interpolation was carried out before cross-validation. It does not introduce
 spatial leakage, because under city-grouped cross-validation the whole time
-series of a city is confined to a single fold.
+series of a city is confined to a single fold. The observed-only sensitivity
+additionally checks whether predictive performance depends on the interpolated
+outcome rows themselves.
 
 ## Units
 

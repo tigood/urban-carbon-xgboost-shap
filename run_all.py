@@ -1,13 +1,12 @@
-"""Reproduce every table and figure of the manuscript in order.
+"""Reproduce the manuscript and supplementary analysis artifacts in order.
 
 Usage (from the repository root):
 
     python run_all.py            # full reproduction
-    python run_all.py --fast     # skip the two long-running steps
+    python run_all.py --fast     # skip computationally heavy CV/bootstrap steps
 
-The two long-running steps are the nested cross-validation benchmark
-(Tables 2 and 3) and the city-level bootstrap of the tipping points. Both are
-correct but computationally heavy.
+The nested cross-validation experiments, log-outcome sensitivity and
+city-level bootstrap are correct but computationally heavy.
 """
 
 import argparse
@@ -25,6 +24,12 @@ MODULES = [
     ("Figure 6 - heating heterogeneity", "scripts.figure6_heating_heterogeneity", False),
     ("Figure 7 - ranking robustness", "scripts.figure7_hyperparameter_robustness", False),
     ("Figures 8-10 - log-outcome sensitivity", "scripts.figure8_10_log_model_sensitivity", True),
+    ("Table S1 - observed-only CO2 sensitivity", "scripts.sensitivity_co2_observed_only", True),
+    (
+        "SHAP sensitivity - without government expenditure",
+        "scripts.sensitivity_shap_without_gov_expenditure",
+        False,
+    ),
     ("Tipping points - bootstrap", "scripts.tipping_point_bootstrap", True),
 ]
 
@@ -34,7 +39,7 @@ def main() -> None:
     parser.add_argument(
         "--fast",
         action="store_true",
-        help="skip the nested cross-validation and bootstrap steps",
+        help="skip computationally heavy cross-validation and bootstrap steps",
     )
     args = parser.parse_args()
 

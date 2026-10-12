@@ -1,1 +1,1 @@
-"""One module per table and figure of the manuscript."""
+"""Modules for manuscript artifacts and supplementary sensitivity analyses."""
